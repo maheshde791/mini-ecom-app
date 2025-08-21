@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 
+// New (always go via proxy)
+const API_BASE_URL = "/api";
+
 export default function Register({ setToken }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -8,7 +11,7 @@ export default function Register({ setToken }) {
   const handleRegister = async () => {
     try {
       // Step 1: Call /register
-      const res = await fetch("http://localhost:8000/register", {
+      const res = await fetch(`${API_BASE_URL}/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, password }),
@@ -18,7 +21,7 @@ export default function Register({ setToken }) {
         setMessage("✅ Registered successfully!");
 
         // Step 2: Auto-login immediately
-        const loginRes = await fetch("http://localhost:8000/login", {
+        const loginRes = await fetch(`${API_BASE_URL}/login`, {
           method: "POST",
           headers: { "Content-Type": "application/x-www-form-urlencoded" },
           body: new URLSearchParams({

@@ -1,30 +1,40 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
+
+// New (always go via proxy)
+const API_BASE_URL = "/api";
 
 export default function Profile({ token }) {
-  const [profile, setProfile] = useState(null);
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const res = await fetch("http://localhost:8000/me", {
+        const res = await fetch(`${API_BASE_URL}/me`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
-        const data = await res.json();
-        setProfile(data);
-      } catch (err) {
-        setProfile({ error: "❌ Failed to load profile" });
+
+        if (res.ok) {
+          const data = await res.json();
+          setUser(data);
+        } else {
+          setUser(null);
+        }
+      } catch {
+        setUser(null);
       }
     };
 
     fetchProfile();
   }, [token]);
 
+  if (!user) return <p>❌ Not logged in</p>;
+
   return (
     <div>
-      <h3>Profile</h3>
-      <pre>{JSON.stringify(profile, null, 2)}</pre>
+      <h3>👤 Profile</h3>
+      <p><strong>Username:</strong> {user.username}</p>
     </div>
   );
 }

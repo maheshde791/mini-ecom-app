@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 
+// New (always go via proxy)
+const API_BASE_URL = "/api";
+
 export default function Login({ setToken }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -7,7 +10,7 @@ export default function Login({ setToken }) {
 
   const handleLogin = async () => {
     try {
-      const res = await fetch("http://localhost:8000/login", {
+      const res = await fetch(`${API_BASE_URL}/login`, {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         body: new URLSearchParams({ username, password }),

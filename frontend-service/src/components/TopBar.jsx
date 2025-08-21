@@ -8,7 +8,7 @@ export default function TopBar({ token, onLogout }) {
 
     const fetchProfile = async () => {
       try {
-        const res = await fetch("http://localhost:8000/me", {
+        const res = await fetch("/api/me", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -16,6 +16,8 @@ export default function TopBar({ token, onLogout }) {
         if (res.ok) {
           const data = await res.json();
           setUsername(data.username);
+        } else {
+          console.error("Failed to fetch profile:", res.statusText);
         }
       } catch (err) {
         console.error("Failed to fetch profile:", err);
